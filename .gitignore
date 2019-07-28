@@ -1,0 +1,8 @@
+# Remove node_modules
+node_modules
+
+# Mongo connection properties
+mongodb/connection.properties
+
+# Auth config
+api/auth/config.js
