@@ -13,21 +13,31 @@ class ResponseStatus {
         }
     }
 
-    static NO_AUTHENTICATION_TOKE() {
+    static NO_AUTHENTICATION_TOKEN() {
         return {
             message: {
                 developerMessage: "No authentication token provided",
-                userMessage: "No authentication token provided"
+                userMessage: "Provide authentication token"
             },
             statusCode: 401
         }
     }
 
-    static INVALID_AUTHENTICATION_TOKE() {
+    static INVALID_AUTHENTICATION_TOKEN() {
         return {
             message: {
                 developerMessage: "Invalid authentication token",
-                userMessage: "Invalid authentication token"
+                userMessage: "Provide valid authentication token"
+            },
+            statusCode: 401
+        }
+    }
+
+    static AUTHENTICATION_TOKEN_EXPIRED() {
+        return {
+            message: {
+                developerMessage: "Authentication token expired",
+                userMessage: "Provide new authentication token"
             },
             statusCode: 401
         }

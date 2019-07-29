@@ -1,4 +1,5 @@
 const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
+const ResponseStatus = require('./../../ResponseStatus');
 
 class GetUser {
     execute(parameters, context) {
@@ -7,12 +8,17 @@ class GetUser {
         console.log(parameters.query);
         console.log(parameters.body);
 
-        let mongoDBUtility = new MongoDBUtility();
-        mongoDBUtility.getData("user");
+        return new Promise(async (resolve, reject) => {
+            try {
+                let mongoDBUtility = new MongoDBUtility();
+                let getResult = await mongoDBUtility.getData("user");
 
-        let response = new Object();
-        response["message"] = "Console log";
-        return response;
+
+                resolve(ResponseStatus.OK(getResult));
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 }
 

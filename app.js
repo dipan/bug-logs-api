@@ -1,5 +1,6 @@
 const routerV0 = require('./api/v0/router');
 const express = require('express');
+const Utility = require('./utility/Utility');
 const UserAuthenticator = require('./api/auth/UserAuthenticator');
 const ResponseStatus = require('./api/ResponseStatus');
 
@@ -33,13 +34,24 @@ app.get('/', async function (req, res) {
 apiRoutes.use("/", (req, res, next) => {
     let token = req.headers.authorization;
     try {
-        console.log(UserAuthenticator.authenticateToken(token.substring("Bearer ".length)));
-        next();
-        console.log("After next()");
+        if (Utility.isStringEmptyOrUndefined(token)) {
+            let responseStatus = ResponseStatus.NO_AUTHENTICATION_TOKEN();
+            res.status(responseStatus.statusCode)
+                .send(responseStatus.message);
+        } else {
+            console.log(UserAuthenticator.authenticateToken(token.substring("Bearer ".length)));
+            next();
+        }
     } catch (error) {
         console.log(error);
-        res.status(ResponseStatus.INTERNAL_SERVER_ERROR().statusCode)
-            .send(ResponseStatus.INTERNAL_SERVER_ERROR(error).message);
+        let responseStatus;
+        if (error.name === "JsonWebTokenError") {
+            responseStatus = ResponseStatus.INVALID_AUTHENTICATION_TOKEN();
+        } else {
+            responseStatus = ResponseStatus.INTERNAL_SERVER_ERROR(error);
+        }
+        res.status(responseStatus.statusCode)
+            .send(responseStatus.message);
     }
 });
 apiRoutes.use("/v0", routerV0);

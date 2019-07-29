@@ -18,13 +18,13 @@ routerV0.route("/user")
             res.status(apiResponse.statusCode).send(apiResponse.message);
         }
     })
-    .get((req, res) => {
+    .get(async (req, res) => {
         let apiResponse = null;
         try {
-            apiResponse = new GetUser().execute(req, undefined);
+            apiResponse = await new GetUser().execute(req, undefined);
         } catch (error) {
-            apiResponse = new Object();
-            apiResponse["error"] = error
+            console.log(error);
+            apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
         } finally {
             res.status(apiResponse.statusCode).send(apiResponse.message);
         }

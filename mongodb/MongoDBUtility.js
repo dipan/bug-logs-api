@@ -57,20 +57,32 @@ class MongoDBUtility {
 
     }
 
-    async getData(collectionName) {
-        try {
-            let mongoDBConnection = await this.getMongoConnection();
-            let collection = mongoDBConnection.collection(collectionName);
-            collection.find({}).toArray((error, doc) => {
-                if (error) {
+    getData(collectionName) {
+        return new Promise((resolve, reject) => {
+            this.getMongoConnection()
+                .then((mongoDBConnection) => {
+                    try {
+                        let collection = mongoDBConnection.collection(collectionName);
+                        collection.find({}).toArray((error, docs) => {
+                            if (error) {
+                                console.log(error);
+                                reject(error);
+                            } else {
+                                console.log("Successfully executed query : db.getCollection(\"" + collectionName + "\").find().pretty()");
+                                resolve(docs);
+                            }
+                        });
+                    } catch (error) {
+                        console.log(error);
+                        reject(error);
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error while finding data : ");
                     console.log(error);
-                    throw error;
-                }
-                console.log(doc);
-            });
-        } finally {
-            // mongoDBConnection.close();
-        }
+                    reject(error);
+                });
+        });
     }
 
 }
