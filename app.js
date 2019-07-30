@@ -11,17 +11,17 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/", (req, res, next) => {
-    console.log(req.httpVersionMajor);
-    console.log(req.httpVersionMinor);
-    console.log(req.httpVersion);
-    console.log(req.method);
-    console.log(req.originalUrl);
-    console.log(req.baseUrl);
-    console.log(req.url);
-    console.log(req.headers);
-    console.log(req.params);
-    console.log(req.query);
-    console.log(req.body);
+    console.log("Version : " + req.httpVersion);
+    console.log("Major version : " + req.httpVersionMajor);
+    console.log("Minor version : " + req.httpVersionMinor);
+    console.log("Method : " + req.method);
+    console.log("Original URL : " + req.originalUrl);
+    console.log("Base URL : " + req.baseUrl);
+    console.log("URL : " + req.url);
+    console.log("Headers : " + JSON.stringify(req.headers, null, 2));
+    console.log("Params : " + JSON.stringify(req.params, null, 2));
+    console.log("Query : " + JSON.stringify(req.query, null, 2));
+    console.log("Body : " + JSON.stringify(req.body, null, 2));
     // console.log(res);
 
     next();
@@ -39,7 +39,8 @@ apiRoutes.use("/", (req, res, next) => {
             res.status(responseStatus.statusCode)
                 .send(responseStatus.message);
         } else {
-            console.log(UserAuthenticator.authenticateToken(token.substring("Bearer ".length)));
+            token = UserAuthenticator.authenticateToken(token.substring("Bearer ".length));
+            req["userData"] = token.userData;
             next();
         }
     } catch (error) {
@@ -47,6 +48,8 @@ apiRoutes.use("/", (req, res, next) => {
         let responseStatus;
         if (error.name === "JsonWebTokenError") {
             responseStatus = ResponseStatus.INVALID_AUTHENTICATION_TOKEN();
+        } else if (error.name === "TokenExpiredError") {
+            responseStatus = ResponseStatus.AUTHENTICATION_TOKEN_EXPIRED();
         } else {
             responseStatus = ResponseStatus.INTERNAL_SERVER_ERROR(error);
         }

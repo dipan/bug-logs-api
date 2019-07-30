@@ -21,7 +21,7 @@ routerV0.route("/user")
     .get(async (req, res) => {
         let apiResponse = null;
         try {
-            apiResponse = await new GetUser().execute(req, undefined);
+            apiResponse = await new GetUser().execute(req);
         } catch (error) {
             console.log(error);
             apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);

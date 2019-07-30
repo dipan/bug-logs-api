@@ -2,11 +2,8 @@ const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
 
 class GetUser {
-    execute(parameters, context) {
-        console.log("parameters.headers = " + JSON.stringify(parameters.headers, null, 2));
-        console.log(parameters.params);
-        console.log(parameters.query);
-        console.log(parameters.body);
+    execute(parameters) {
+        console.log(parameters.userData);
 
         return new Promise(async (resolve, reject) => {
             try {

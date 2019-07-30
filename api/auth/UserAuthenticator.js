@@ -18,7 +18,7 @@ class UserAuthenticator {
 
     static authenticateToken(token) {
         let decoded = jwt.verify(token, jwtConfig.jwtKey, { algorithm: 'HS256' });
-        console.log("decoded from token : " + decoded);
+        console.log("Decoded token : " + JSON.stringify(decoded, null, 2));
         return decoded;
     }
 }
