@@ -38,9 +38,9 @@ yarn
 
 #### 3: Add Config data
 
-3.1: Create file `config.js` in `lib` directory
+3.1: Create file `config.js` in `api/auth` directory
 
-3.2: Copy template content form `src/lib/app.config.sample.js` and update with real values
+3.2: Copy template content form `src/api/auth/app.config.sample.js` and update with real values
 
 3.3: Create file `connection.properties` in `lib` directory
 

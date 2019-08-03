@@ -19,7 +19,7 @@ class LoginUser {
         insertUserData["dpLink"] = authUserData.picture;
         insertUserData["signInProvider"] = authUserData.firebase.sign_in_provider;
         insertUserData["roles"] = rolesList;
-        insertUserData["ct"] = authUserData.iat;
+        insertUserData["ct"] = new Date().getTime();
 
         return new Promise(async (resolve, reject) => {
             try {

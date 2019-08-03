@@ -10,8 +10,11 @@ class GetUser {
                 let mongoDBUtility = new MongoDBUtility();
                 let getResult = await mongoDBUtility.getData("user");
 
-
-                resolve(ResponseStatus.OK(getResult));
+                if (getResult.length === 0) {
+                    resolve(ResponseStatus.NO_DATA_AVAILABLE());
+                } else {
+                    resolve(ResponseStatus.OK(getResult));
+                }
             } catch (error) {
                 reject(error);
             }
