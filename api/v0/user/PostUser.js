@@ -2,7 +2,7 @@ const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
 
 class PostUser {
-    execute(parameters, context) {
+    execute(parameters) {
         console.log("parameters.headers = " + JSON.stringify(parameters.headers, null, 2));
         console.log(parameters.params);
         console.log(parameters.query);

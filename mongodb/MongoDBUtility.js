@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const Server = require('mongodb').Server;
-const PropertiesReader = require('properties-reader');
+const Utility = require('./../utility/Utility');
 
 class MongoDBUtility {
 
@@ -13,9 +13,8 @@ class MongoDBUtility {
 
     getMongoConnection() {
         return new Promise((resolve, reject) => {
-            let properties = PropertiesReader('mongodb/connection.properties');
-            let mongoHost = properties.get('MONGO_HOST');
-            let mongoPort = properties.get('MONGO_PORT');
+            let mongoHost = Utility.getConnectionProperties('MONGO_HOST');
+            let mongoPort = Utility.getConnectionProperties('MONGO_PORT');
 
             console.log(this.dbName)
             console.log("Connecting to MongoDB...");
@@ -64,11 +63,13 @@ class MongoDBUtility {
                     try {
                         let collection = mongoDBConnection.collection(collectionName);
                         collection.find({}).toArray((error, docs) => {
+                            let query = "db.getCollection(\"" + collectionName + "\").find().pretty()";
                             if (error) {
+                                console.log("Failed to execut query : " + query);
                                 console.log(error);
                                 reject(error);
                             } else {
-                                console.log("Successfully executed query : db.getCollection(\"" + collectionName + "\").find().pretty()");
+                                console.log("Successfully executed query : " + query);
                                 resolve(docs);
                             }
                         });
@@ -79,6 +80,41 @@ class MongoDBUtility {
                 })
                 .catch((error) => {
                     console.log("Error while finding data : ");
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    }
+
+    getDataById(collectionName, id) {
+        return new Promise((resolve, reject) => {
+            this.getMongoConnection()
+                .then((mongoDBConnection) => {
+                    try {
+                        let collection = mongoDBConnection.collection(collectionName);
+                        let filter = {
+                            _id: id
+                        };
+                        collection.findOne(filter, (error, item) => {
+                            let query = "db.getCollection(\"" + collectionName + "\").find(" +
+                                JSON.stringify(filter, null, 0) +
+                                ").pretty()";
+                            if (error) {
+                                console.log("Failed to execut query : " + query);
+                                console.log(error);
+                                reject(error);
+                            } else {
+                                console.log("Successfully executed query : " + query);
+                                resolve(item);
+                            }
+                        });
+                    } catch (error) {
+                        console.log(error);
+                        reject(error);
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error while finding data by : ");
                     console.log(error);
                     reject(error);
                 });

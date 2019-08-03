@@ -1,16 +1,29 @@
 const express = require('express');
 const ResponseStatus = require('./../ResponseStatus');
+const LoginUser = require('./user/LoginUser');
 const PostUser = require('./user/PostUser');
 const GetUser = require('./user/GetUsers');
 
 const routerV0 = express.Router();
 
-routerV0.route("/user")
+routerV0.route("/login")
     .post(async (req, res) => {
-        console.log("POST API");
         let apiResponse = null;
         try {
-            apiResponse = await new PostUser().execute(req, undefined);
+            apiResponse = await new LoginUser().execute(req);
+        } catch (error) {
+            console.log(error);
+            apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
+        } finally {
+            res.status(apiResponse.statusCode).send(apiResponse.message);
+        }
+    });
+
+routerV0.route("/user")
+    .post(async (req, res) => {
+        let apiResponse = null;
+        try {
+            apiResponse = await new PostUser().execute(req);
         } catch (error) {
             console.log(error);
             apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
@@ -28,7 +41,7 @@ routerV0.route("/user")
         } finally {
             res.status(apiResponse.statusCode).send(apiResponse.message);
         }
-    })
+    });
 
 
 module.exports = routerV0

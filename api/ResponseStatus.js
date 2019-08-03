@@ -43,6 +43,16 @@ class ResponseStatus {
         }
     }
 
+    static NO_DATA_AVAILABLE() {
+        return {
+            message: {
+                developerMessage: "No data available",
+                userMessage: "No data available"
+            },
+            statusCode: 404
+        }
+    }
+
     static INTERNAL_SERVER_ERROR(internalError) {
         return {
             message: {

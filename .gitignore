@@ -2,7 +2,7 @@
 node_modules
 
 # Mongo connection properties
-mongodb/connection.properties
+lib/connection.properties
 
 # Auth config
 api/auth/config.js

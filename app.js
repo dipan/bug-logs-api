@@ -4,7 +4,7 @@ const Utility = require('./utility/Utility');
 const UserAuthenticator = require('./api/auth/UserAuthenticator');
 const ResponseStatus = require('./api/ResponseStatus');
 
-const apiRoutes = express.Router();
+const authAPIRoutes = express.Router();
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -31,7 +31,7 @@ app.get('/', async function (req, res) {
     res.sendFile(__dirname + "/api/spec/buglogV0.html");
 });
 
-apiRoutes.use("/", (req, res, next) => {
+authAPIRoutes.use("/", (req, res, next) => {
     let token = req.headers.authorization;
     try {
         if (Utility.isStringEmptyOrUndefined(token)) {
@@ -57,9 +57,9 @@ apiRoutes.use("/", (req, res, next) => {
             .send(responseStatus.message);
     }
 });
-apiRoutes.use("/v0", routerV0);
+authAPIRoutes.use("/v0", routerV0);
 
-app.use("/api/auth", apiRoutes);
+app.use("/api/auth", authAPIRoutes);
 
 app.use("/api", (req, res, next) => {
     res.status(200).send("No authentication required");
