@@ -6,3 +6,6 @@ lib/connection.properties
 
 # Auth config
 api/auth/config.js
+id_rsa
+
+test_methods\.js

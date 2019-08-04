@@ -16,7 +16,7 @@ class MongoDBUtility {
             let mongoHost = Utility.getConnectionProperties('MONGO_HOST');
             let mongoPort = Utility.getConnectionProperties('MONGO_PORT');
 
-            console.log(this.dbName)
+            // console.log(this.dbName);
             console.log("Connecting to MongoDB...");
             let mongoClient = new MongoClient(new Server(mongoHost, mongoPort));
             mongoClient.connect((error, mongoClient) => {
@@ -86,7 +86,7 @@ class MongoDBUtility {
         });
     }
 
-    getDataById(collectionName, id) {
+    getDataById(collectionName, id, projection) {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
@@ -95,9 +95,23 @@ class MongoDBUtility {
                         let filter = {
                             _id: id
                         };
-                        collection.findOne(filter, (error, item) => {
+                        let projectionExpn = new Object();
+                        if (Utility.isStringNonEmpty(projection)) {
+                            projection = projection.split(",");
+                            projectionExpn["_id"] = 0;
+                            for (let expn of projection) {
+                                projectionExpn[expn.trim()] = 1;
+                            }
+                        }
+                        projection = {
+                            projection: projectionExpn
+                        }
+
+                        collection.findOne(filter, projection, (error, item) => {
                             let query = "db.getCollection(\"" + collectionName + "\").find(" +
                                 JSON.stringify(filter, null, 0) +
+                                ", " +
+                                JSON.stringify(projectionExpn, null, 0) +
                                 ").pretty()";
                             if (error) {
                                 console.log("Failed to execut query : " + query);

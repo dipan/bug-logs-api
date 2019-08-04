@@ -1,5 +1,7 @@
+import Vue from 'vue';
+
 new Vue({
-    el: '#vue-app',
+    el: '#specV0',
     data: {
         rest_api: [
             {

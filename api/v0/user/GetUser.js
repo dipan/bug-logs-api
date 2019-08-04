@@ -1,17 +1,19 @@
 const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
 
-class GetUsers {
+class GetUser {
     execute(parameters) {
-        console.log(parameters.userData);
-
         return new Promise(async (resolve, reject) => {
             try {
                 let mongoDBUtility = new MongoDBUtility();
-                let getResult = await mongoDBUtility.getData("user");
+                let id = parameters.params.userId;
+                let query = parameters.query;
+                let projection = query.projection;
 
-                if (getResult.length === 0) {
-                    resolve(ResponseStatus.NO_DATA_AVAILABLE());
+                let getResult = await mongoDBUtility.getDataById("user", id, projection);
+
+                if (getResult === null) {
+                    resolve(ResponseStatus.OBJECT_NOT_FOUND("user"));
                 } else {
                     resolve(ResponseStatus.OK(getResult));
                 }
@@ -22,4 +24,4 @@ class GetUsers {
     }
 }
 
-module.exports = GetUsers;
+module.exports = GetUser;

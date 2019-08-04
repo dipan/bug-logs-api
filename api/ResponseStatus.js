@@ -53,6 +53,16 @@ class ResponseStatus {
         }
     }
 
+    static OBJECT_NOT_FOUND(objectType) {
+        return {
+            message: {
+                developerMessage: "Object not found",
+                userMessage: "Requested " + objectType + " not found"
+            },
+            statusCode: 404
+        }
+    }
+
     static INTERNAL_SERVER_ERROR(internalError) {
         return {
             message: {
