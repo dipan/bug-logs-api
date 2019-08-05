@@ -9,15 +9,62 @@
 </head>
 
 <body>
-        <h2 id="baseurlhttp35202175543000api">Base URL : <a href="#">http://35.202.175.54:3000/api</a></h2>
-        <h3 id="login">/login</h3>
-        <ul>
-        <li><p>POST</p></li>
-        <li><p>headers</p>
-        <ul>
-        <li>[x] authorization : Bearer token</li>
-        <li>content-type : application/json</li></ul></li>
-        </ul>
+    <h2 id="baseurlhttp35202175543000api">Base URL : <a href="#">http://35.202.175.54:3000/api</a></h2>
+    <h3 id="login">/login</h3>
+    <ul>
+        <li>POST<ul>
+                <li>headers<ul>
+                        <li><strong>authorization : Bearer token</strong></li>
+                        <li>content-type : application/json</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <h3 id="user">/user</h3>
+    <ul>
+        <li>POST<ul>
+                <li><em>under development</em></li>
+            </ul>
+        </li>
+        <li>GET
+            <ul>
+                <li>response :
+                    <pre>
+                        <code>  
+                          [
+                            {
+                              "_id": "string",
+                              "name": "string",
+                              "email": "string",
+                              "emailVerified": boolean,
+                              "dpLink": "string",
+                              "signInProvider": "string",
+                              "roles": array,
+                              "ct": long
+                            }
+                          ]
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 id="useruserid">/user/:userId</h3>
+    <ul>
+        <li>GET<ul>
+                <li>path<ul>
+                        <li><strong>userId : valid user id</strong></li>
+                    </ul>
+                </li>
+                <li>query<ul>
+                        <li>projection : fields to fetch, comma separated field names</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </body>
 
 </html>
