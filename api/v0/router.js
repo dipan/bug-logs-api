@@ -57,4 +57,4 @@ routerV0.route("/user/:userId")
         }
     });
 
-module.exports = routerV0
+module.exports = routerV0;

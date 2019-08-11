@@ -1,4 +1,5 @@
 const routerV0 = require('./api/v0/router');
+const routerCom = require('./api/com/router');
 const express = require('express');
 const Utility = require('./utility/Utility');
 const UserAuthenticator = require('./api/auth/UserAuthenticator');
@@ -28,7 +29,7 @@ app.use("/", (req, res, next) => {
 });
 
 app.get('/', async function (req, res) {
-    res.sendFile(__dirname + "/api/spec/buglogV0.html");
+    res.json("Home");
 });
 
 authAPIRoutes.use("/", (req, res, next) => {
@@ -61,8 +62,6 @@ authAPIRoutes.use("/v0", routerV0);
 
 app.use("/api/auth", authAPIRoutes);
 
-app.use("/api", (req, res, next) => {
-    res.status(200).send("No authentication required");
-});
+app.use("/api", routerCom);
 
 app.listen(port, () => console.log(`Listening on port ${port}!`));

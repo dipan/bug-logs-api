@@ -128,7 +128,42 @@ class MongoDBUtility {
                     }
                 })
                 .catch((error) => {
-                    console.log("Error while finding data by : ");
+                    console.log("Error while finding data by id : ");
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    }
+
+    updateData(collectionName, id, data) {
+        return new Promise((resolve, reject) => {
+            this.getMongoConnection()
+                .then((mongoDBConnection) => {
+                    let collection = mongoDBConnection.collection(collectionName);
+                    let filter = {
+                        _id: id
+                    };
+                    data = {
+                        $set: data
+                    }
+                    collection.updateOne(filter, data, (error, item) => {
+                        let query = "db.getCollection(\"" + collectionName + "\").update(" +
+                            JSON.stringify(filter, null, 0) +
+                            ", " +
+                            JSON.stringify(data, null, 0) +
+                            ")";
+                        if (error) {
+                            console.log("Failed to execut query : " + query);
+                            console.log(error);
+                            reject(error);
+                        } else {
+                            console.log("Successfully executed query : " + query);
+                            resolve(item);
+                        }
+                    })
+                })
+                .catch((error) => {
+                    console.log("Error while updating data : ");
                     console.log(error);
                     reject(error);
                 });
