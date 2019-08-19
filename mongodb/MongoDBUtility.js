@@ -26,8 +26,7 @@ class MongoDBUtility {
                     reject(error);
                     return;
                 }
-                resolve(mongoClient.db(this.dbName));
-
+                resolve(mongoClient);
                 console.log("Connected to MongoDB...");
             });
         })
@@ -37,7 +36,8 @@ class MongoDBUtility {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
-                    let collection = mongoDBConnection.collection(collectionName);
+                    let db = mongoDBConnection.db(this.dbName);
+                    let collection = db.collection(collectionName);
                     collection.insertOne(data, (error, result) => {
                         if (error) {
                             console.log(error);
@@ -47,6 +47,7 @@ class MongoDBUtility {
                             resolve(result);
                         }
                     });
+                    mongoDBConnection.close();
                 }).catch((error) => {
                     console.log("Error while inserting data : ");
                     console.log(error);
@@ -61,7 +62,8 @@ class MongoDBUtility {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
                     try {
-                        let collection = mongoDBConnection.collection(collectionName);
+                        let db = mongoDBConnection.db(this.dbName);
+                        let collection = db.collection(collectionName);
                         collection.find({}).toArray((error, docs) => {
                             let query = "db.getCollection(\"" + collectionName + "\").find().pretty()";
                             if (error) {
@@ -77,6 +79,7 @@ class MongoDBUtility {
                         console.log(error);
                         reject(error);
                     }
+                    mongoDBConnection.close();
                 })
                 .catch((error) => {
                     console.log("Error while finding data : ");
@@ -91,7 +94,8 @@ class MongoDBUtility {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
                     try {
-                        let collection = mongoDBConnection.collection(collectionName);
+                        let db = mongoDBConnection.db(this.dbName);
+                        let collection = db.collection(collectionName);
                         let filter = {
                             _id: id
                         };
@@ -126,6 +130,7 @@ class MongoDBUtility {
                         console.log(error);
                         reject(error);
                     }
+                    mongoDBConnection.close();
                 })
                 .catch((error) => {
                     console.log("Error while finding data by id : ");
@@ -139,7 +144,8 @@ class MongoDBUtility {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
-                    let collection = mongoDBConnection.collection(collectionName);
+                    let db = mongoDBConnection.db(this.dbName);
+                    let collection = db.collection(collectionName);
                     let filter = {
                         _id: id
                     };
@@ -161,6 +167,7 @@ class MongoDBUtility {
                             resolve(item);
                         }
                     })
+                    mongoDBConnection.close();
                 })
                 .catch((error) => {
                     console.log("Error while updating data : ");

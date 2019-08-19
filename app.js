@@ -29,7 +29,7 @@ app.use("/", (req, res, next) => {
 });
 
 app.get('/', async function (req, res) {
-    res.json("Home");
+    res.sendFile(__dirname + "/api/spec/buglogV0.html");
 });
 
 authAPIRoutes.use("/", (req, res, next) => {

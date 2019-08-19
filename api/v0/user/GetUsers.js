@@ -1,5 +1,6 @@
 const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
+const UserAuthenticator = require('./../../auth/UserAuthenticator');
 
 class GetUsers {
     execute(parameters) {
@@ -7,6 +8,11 @@ class GetUsers {
 
         return new Promise(async (resolve, reject) => {
             try {
+                if(!await UserAuthenticator.isUserAdmin(parameters.userData.uid)){
+                    resolve(ResponseStatus.FORBIDDEN("Only admins are allowed to access this resource"));
+                    return;
+                }
+
                 let mongoDBUtility = new MongoDBUtility();
                 let getResult = await mongoDBUtility.getData("user");
 

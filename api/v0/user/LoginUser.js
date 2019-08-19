@@ -32,13 +32,13 @@ class LoginUser {
                     let insertResult = await mongoDBUtility.insertData(collectionName, insertUserData);
 
                     response["id"] = id;
-                    response["message"] = "SignedIn successfully";
+                    response["message"] = "SignedUp successfully";
                     response["result"] = insertResult.result;
                     response["roles"] = rolesList;
                     resolve(ResponseStatus.CREATED(response));
                 } else {
                     response["id"] = existingUser._id;
-                    response["message"] = "LoggedIn successfully";
+                    response["message"] = "SignedIn successfully";
                     response["roles"] = existingUser.roles;
                     resolve(ResponseStatus.OK(response));
                 }

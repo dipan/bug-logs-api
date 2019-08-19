@@ -43,6 +43,18 @@ class ResponseStatus {
         }
     }
 
+    // forbidden status
+    static FORBIDDEN(userMessage) {
+        return {
+            message: {
+                developerMessage: "User does not have the necessary permissions for the resource",
+                userMessage: userMessage
+            },
+            statusCode: 403
+        }
+    }
+
+    // not found status
     static NO_DATA_AVAILABLE() {
         return {
             message: {
