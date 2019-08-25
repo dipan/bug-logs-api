@@ -1,9 +1,11 @@
+process.env.NODE_ENV = process.argv[2] || "development";
 const routerV0 = require('./api/v0/router');
 const routerCom = require('./api/com/router');
 const express = require('express');
 const Utility = require('./utility/Utility');
 const UserAuthenticator = require('./api/auth/UserAuthenticator');
 const ResponseStatus = require('./api/ResponseStatus');
+const Logger = require('./com/Logger');
 
 const authAPIRoutes = express.Router();
 const app = express();
@@ -12,18 +14,18 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/", (req, res, next) => {
-    console.log("Version : " + req.httpVersion);
-    console.log("Major version : " + req.httpVersionMajor);
-    console.log("Minor version : " + req.httpVersionMinor);
-    console.log("Method : " + req.method);
-    console.log("Original URL : " + req.originalUrl);
-    console.log("Base URL : " + req.baseUrl);
-    console.log("URL : " + req.url);
-    console.log("Headers : " + JSON.stringify(req.headers, null, 2));
-    console.log("Params : " + JSON.stringify(req.params, null, 2));
-    console.log("Query : " + JSON.stringify(req.query, null, 2));
-    console.log("Body : " + JSON.stringify(req.body, null, 2));
-    // console.log(res);
+    Logger.info("Version : " + req.httpVersion);
+    Logger.info("Major version : " + req.httpVersionMajor);
+    Logger.info("Minor version : " + req.httpVersionMinor);
+    Logger.info("Method : " + req.method);
+    Logger.info("Original URL : " + req.originalUrl);
+    Logger.info("Base URL : " + req.baseUrl);
+    Logger.info("URL : " + req.url);
+    Logger.info("Headers : " + JSON.stringify(req.headers, null, 2));
+    Logger.info("Params : " + JSON.stringify(req.params, null, 2));
+    Logger.info("Query : " + JSON.stringify(req.query, null, 2));
+    Logger.info("Body : " + JSON.stringify(req.body, null, 2));
+    // Logger.info(res);
 
     next();
 });
@@ -45,7 +47,7 @@ authAPIRoutes.use("/", (req, res, next) => {
             next();
         }
     } catch (error) {
-        console.log(error);
+        Logger.error(error);
         let responseStatus;
         if (error.name === "JsonWebTokenError") {
             responseStatus = ResponseStatus.INVALID_AUTHENTICATION_TOKEN();
@@ -64,4 +66,4 @@ app.use("/api/auth", authAPIRoutes);
 
 app.use("/api", routerCom);
 
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+app.listen(port, () => Logger.info(`${process.env.NODE_ENV} environment : Listening on port ${port}!`));

@@ -7,6 +7,9 @@ lib/connection.properties
 # Auth config
 api/auth/config.js
 
+# Logs
+logs
+
 # Local testing files
 id_rsa
-test_methods.js
+test

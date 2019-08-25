@@ -20,6 +20,7 @@ class LoginUser {
         insertUserData["signInProvider"] = authUserData.firebase.sign_in_provider;
         insertUserData["roles"] = rolesList;
         insertUserData["ct"] = new Date().getTime();
+        insertUserData["logLimit"] = 500;
 
         return new Promise(async (resolve, reject) => {
             try {

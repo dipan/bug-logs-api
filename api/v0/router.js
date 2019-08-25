@@ -4,6 +4,7 @@ const LoginUser = require('./user/LoginUser');
 const PostUser = require('./user/PostUser');
 const GetUsers = require('./user/GetUsers');
 const GetUser = require('./user/GetUser');
+const PostLog = require('./log/PostLog');
 
 const routerV0 = express.Router();
 
@@ -49,6 +50,19 @@ routerV0.route("/user/:userId")
         let apiResponse = null;
         try {
             apiResponse = await new GetUser().execute(req);
+        } catch (error) {
+            console.log(error);
+            apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
+        } finally {
+            res.status(apiResponse.statusCode).send(apiResponse.message);
+        }
+    });
+
+routerV0.route("/log")
+    .post(async (req, res) => {
+        let apiResponse = null;
+        try {
+            apiResponse = await new PostLog().execute(req);
         } catch (error) {
             console.log(error);
             apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);

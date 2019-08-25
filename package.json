@@ -13,10 +13,12 @@
     "arraylist": "^0.1.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
     "mongodb": "^3.3.0",
     "properties-reader": "^0.3.1",
     "uuid": "^3.3.2",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "showdown": "^1.9.0"
