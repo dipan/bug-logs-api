@@ -14,18 +14,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/", (req, res, next) => {
-    Logger.info("Version : " + req.httpVersion);
-    Logger.info("Major version : " + req.httpVersionMajor);
-    Logger.info("Minor version : " + req.httpVersionMinor);
-    Logger.info("Method : " + req.method);
-    Logger.info("Original URL : " + req.originalUrl);
-    Logger.info("Base URL : " + req.baseUrl);
-    Logger.info("URL : " + req.url);
-    Logger.info("Headers : " + JSON.stringify(req.headers, null, 2));
-    Logger.info("Params : " + JSON.stringify(req.params, null, 2));
-    Logger.info("Query : " + JSON.stringify(req.query, null, 2));
-    Logger.info("Body : " + JSON.stringify(req.body, null, 2));
-    // Logger.info(res);
+    Logger.info(getRequestObject(req));
 
     next();
 });
@@ -47,6 +36,7 @@ authAPIRoutes.use("/", (req, res, next) => {
             next();
         }
     } catch (error) {
+        Logger.error(getRequestObject(req));
         Logger.error(error);
         let responseStatus;
         if (error.name === "JsonWebTokenError") {
@@ -67,3 +57,20 @@ app.use("/api/auth", authAPIRoutes);
 app.use("/api", routerCom);
 
 app.listen(port, () => Logger.info(`${process.env.NODE_ENV} environment : Listening on port ${port}!`));
+
+function getRequestObject(req) {
+    let logObject = {};
+    logObject["version"] = req.httpVersion;
+    logObject["majorVersion"] = req.httpVersionMajor;
+    logObject["minorVersion"] = req.httpVersionMinor;
+    logObject["method"] = req.method;
+    logObject["originalURL"] = req.originalUrl;
+    logObject["baseURL"] = req.baseUrl;
+    logObject["url"] = req.url;
+    logObject["headers"] = req.headers;
+    logObject["params"] = req.params;
+    logObject["query"] = req.query;
+    logObject["body"] = req.body;
+
+    return logObject;
+}

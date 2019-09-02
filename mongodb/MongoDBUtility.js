@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 const Server = require('mongodb').Server;
 const Utility = require('./../utility/Utility');
+const Logger = require('../com/Logger');
 
 class MongoDBUtility {
 
@@ -172,6 +173,41 @@ class MongoDBUtility {
                 .catch((error) => {
                     console.log("Error while updating data : ");
                     console.log(error);
+                    reject(error);
+                });
+        });
+    }
+
+    updateMany(collectionName, data) {
+        return new Promise((resolve, reject) => {
+            this.getMongoConnection()
+                .then((mongoDBConnection) => {
+                    let db = mongoDBConnection.db(this.dbName);
+                    let collection = db.collection(collectionName);
+                    let filter = {};
+                    data = {
+                        $set: data
+                    }
+                    collection.updateMany(filter, data, (error, item) => {
+                        let query = "db.getCollection(\"" + collectionName + "\").updateMany(" +
+                            JSON.stringify(filter, null, 0) +
+                            ", " +
+                            JSON.stringify(data, null, 0) +
+                            ")";
+                        if (error) {
+                            Logger.error("Failed to execut query : " + query);
+                            Logger.error(error);
+                            reject(error);
+                        } else {
+                            Logger.info("Successfully executed query : " + query);
+                            resolve(item);
+                        }
+                    })
+                    mongoDBConnection.close();
+                })
+                .catch((error) => {
+                    Logger.error("Error while updating data : ");
+                    Logger.error(error);
                     reject(error);
                 });
         });

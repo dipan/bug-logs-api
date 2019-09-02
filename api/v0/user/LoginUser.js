@@ -4,7 +4,6 @@ const ResponseStatus = require('./../../ResponseStatus');
 
 class LoginUser {
     execute(parameters) {
-        console.log("parameters.headers = " + JSON.stringify(parameters.headers, null, 2));
         let authUserData = parameters.userData;
         let id = authUserData.uid;
         let rolesList = new ArrayList();

@@ -3,11 +3,6 @@ const ResponseStatus = require('./../../ResponseStatus');
 
 class PostUser {
     execute(parameters) {
-        console.log("parameters.headers = " + JSON.stringify(parameters.headers, null, 2));
-        console.log(parameters.params);
-        console.log(parameters.query);
-        console.log(parameters.body);
-
         return new Promise(async (resolve, reject) => {
             try {
                 let mongoDBUtility = new MongoDBUtility();

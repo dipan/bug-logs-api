@@ -13,6 +13,18 @@ class ResponseStatus {
         }
     }
 
+    // bad request status
+    static REQUIRED_PARAMETER_MISSING(missingParameterName) {
+        return {
+            message: {
+                developerMessage: "The request was invalid",
+                userMessage: "Required parameter is missing",
+                missingParameter: missingParameterName
+            },
+            statusCode: 400
+        }
+    }
+
     static NO_AUTHENTICATION_TOKEN() {
         return {
             message: {
@@ -69,7 +81,7 @@ class ResponseStatus {
         return {
             message: {
                 developerMessage: "Object not found",
-                userMessage: "Requested " + objectType + " not found"
+                userMessage: "Specified " + objectType + " not found"
             },
             statusCode: 404
         }

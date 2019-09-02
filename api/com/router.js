@@ -1,5 +1,5 @@
 const express = require('express');
-const ResponseStatus = require('./../ResponseStatus');
+const ResponseStatus = require('../ResponseStatus');
 const Update = require('./Update');
 
 const routerCom = express.Router();
