@@ -23,7 +23,7 @@ class MongoDBUtility {
             mongoClient.connect((error, mongoClient) => {
                 if (error) {
                     console.log("Failed to connect to MongoDB!!!");
-                    console.log("Error : " + error);
+                    Logger.error(error);
                     reject(error);
                     return;
                 }
@@ -40,57 +40,71 @@ class MongoDBUtility {
                     let db = mongoDBConnection.db(this.dbName);
                     let collection = db.collection(collectionName);
                     collection.insertOne(data, (error, result) => {
+                        let query = "db.getCollection(\"" + collectionName + "\").insert(" +
+                            JSON.stringify(data, null, 0) +
+                            ")";
                         if (error) {
-                            console.log(error);
+                            Logger.error("Failed to execut query : " + query);
+                            Logger.error(error);
                             reject(error);
                         } else {
                             console.log(result);
+                            Logger.info("Successfully executed query : " + query);
                             resolve(result);
                         }
                     });
                     mongoDBConnection.close();
                 }).catch((error) => {
                     console.log("Error while inserting data : ");
-                    console.log(error);
+                    Logger.error(error);
                     reject(error);
                 });
         });
 
     }
 
-    getData(collectionName) {
+    getData(collectionName, filter = "") {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
                     try {
                         let db = mongoDBConnection.db(this.dbName);
                         let collection = db.collection(collectionName);
-                        collection.find({}).toArray((error, docs) => {
-                            let query = "db.getCollection(\"" + collectionName + "\").find().pretty()";
+                        if (Utility.isStringNonEmpty(filter)) {
+                            try {
+                                filter = this.getParsedFilter(filter);
+                            } catch (error) {
+                                throw error;
+                            }
+                        }
+                        collection.find(filter).toArray((error, docs) => {
+                            let query = "db.getCollection(\"" + collectionName + "\").find(" +
+                                JSON.stringify(filter, null, 0) +
+                                ").pretty()";
                             if (error) {
-                                console.log("Failed to execut query : " + query);
-                                console.log(error);
+                                Logger.error("Failed to execut query : " + query);
+                                Logger.error(error);
                                 reject(error);
                             } else {
-                                console.log("Successfully executed query : " + query);
+                                Logger.info("Successfully executed query : " + query);
                                 resolve(docs);
                             }
                         });
                     } catch (error) {
-                        console.log(error);
+                        Logger.error(error);
                         reject(error);
                     }
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
                     console.log("Error while finding data : ");
-                    console.log(error);
+                    Logger.error(error);
                     reject(error);
                 });
         });
     }
 
-    getDataById(collectionName, id, projection) {
+    getDataById(collectionName, id, projection = "") {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
@@ -119,23 +133,23 @@ class MongoDBUtility {
                                 JSON.stringify(projectionExpn, null, 0) +
                                 ").pretty()";
                             if (error) {
-                                console.log("Failed to execut query : " + query);
-                                console.log(error);
+                                Logger.error("Failed to execut query : " + query);
+                                Logger.error(error);
                                 reject(error);
                             } else {
-                                console.log("Successfully executed query : " + query);
+                                Logger.info("Successfully executed query : " + query);
                                 resolve(item);
                             }
                         });
                     } catch (error) {
-                        console.log(error);
+                        Logger.error(error);
                         reject(error);
                     }
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
                     console.log("Error while finding data by id : ");
-                    console.log(error);
+                    Logger.error(error);
                     reject(error);
                 });
         });
@@ -160,11 +174,11 @@ class MongoDBUtility {
                             JSON.stringify(data, null, 0) +
                             ")";
                         if (error) {
-                            console.log("Failed to execut query : " + query);
-                            console.log(error);
+                            Logger.error("Failed to execut query : " + query);
+                            Logger.error(error);
                             reject(error);
                         } else {
-                            console.log("Successfully executed query : " + query);
+                            Logger.info("Successfully executed query : " + query);
                             resolve(item);
                         }
                     })
@@ -172,7 +186,7 @@ class MongoDBUtility {
                 })
                 .catch((error) => {
                     console.log("Error while updating data : ");
-                    console.log(error);
+                    Logger.error(error);
                     reject(error);
                 });
         });
@@ -211,6 +225,41 @@ class MongoDBUtility {
                     reject(error);
                 });
         });
+    }
+
+    getParsedFilter(filter) {
+        filter = filter.trim();
+        let parsedFilter = new Object();
+        let orIndex = -1;
+        let andIndex = -1;
+
+
+        let singleFilter = filter;
+        let firstSpace = singleFilter.indexOf(" ");
+        let secondSpace = singleFilter.indexOf(" ", firstSpace + 1);
+
+        let field = singleFilter.substring(0, firstSpace);
+        let condition = "$" + singleFilter.substring(firstSpace + 1, secondSpace);
+        let value = singleFilter.substring(secondSpace + 1);
+        if (value[0] === "'" && value[value.length - 1] === "'") {
+            value = value.substring(1, value.length - 1)
+        } else {
+            value = Number(value);
+            if (Number.isNaN(value)) {
+                throw new Error("Invalid filter expression : " + filter);
+            }
+        }
+
+        singleFilter = {};
+        singleFilter[condition] = value;
+        parsedFilter[field] = singleFilter;
+
+        // switch (condition) {
+        //     case "eq": parsedFilter[field] = value;
+        //         break;
+        // }
+
+        return parsedFilter;
     }
 
 }

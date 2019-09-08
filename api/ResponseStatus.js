@@ -13,13 +13,23 @@ class ResponseStatus {
         }
     }
 
-    // bad request status
+    // 400 - bad request status
     static REQUIRED_PARAMETER_MISSING(missingParameterName) {
         return {
             message: {
                 developerMessage: "The request was invalid",
                 userMessage: "Required parameter is missing",
                 missingParameter: missingParameterName
+            },
+            statusCode: 400
+        }
+    }
+
+    static INVALID_PARAMETER(message) {
+        return {
+            message: {
+                developerMessage: "Invalid parameter",
+                userMessage: message
             },
             statusCode: 400
         }
@@ -91,7 +101,7 @@ class ResponseStatus {
         return {
             message: {
                 developerMessage: "Internal server error occurred",
-                userMessage: "Internal server error occurred",
+                userMessage: internalError.message,
                 error: internalError
             },
             statusCode: 500

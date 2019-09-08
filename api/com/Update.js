@@ -1,6 +1,6 @@
 const MongoDBUtility = require('../../mongodb/MongoDBUtility');
 const ResponseStatus = require('../ResponseStatus');
-const Utility=require('../../utility/Utility');
+const Utility = require('../../utility/Utility');
 
 class Update {
     execute(parameters) {
@@ -12,7 +12,7 @@ class Update {
                 let id = parameters.query.id;
                 let body = parameters.body;
 
-                if(Utility.isStringEmptyOrUndefined(action)){
+                if (Utility.isStringEmptyOrUndefined(action)) {
                     resolve(ResponseStatus.REQUIRED_PARAMETER_MISSING("action"));
                     return;
                 }
@@ -27,6 +27,7 @@ class Update {
                 if (updateResult.matchedCount === 0) {
                     resolve(ResponseStatus.OBJECT_NOT_FOUND(collection));
                 } else {
+                    delete updateResult["connection"];
                     resolve(ResponseStatus.OK(updateResult));
                 }
             } catch (error) {

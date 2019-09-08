@@ -1,4 +1,5 @@
 const { createLogger, format, transports } = require('winston');
+const moment = require('moment');
 
 const logger = createLogger({
   level: 'info',
@@ -16,8 +17,8 @@ const logger = createLogger({
     // - Write to all logs with level `info` and below to `quick-start-combined.log`.
     // - Write all logs error (and below) to `quick-start-error.log`.
     //
-    new transports.File({ filename: './logs/server_error.log', level: 'error' }),
-    new transports.File({ filename: './logs/server_combined.log' })
+    new transports.File({ filename: './logs/server_error_' + moment().format("YYYY-MM") + '.log', level: 'error' }),
+    new transports.File({ filename: './logs/server_combined_' + moment().format("YYYY-MM-DD") + '.log' })
   ]
 });
 

@@ -1,4 +1,5 @@
 const ArrayList = require('arraylist');
+const moment = require('moment');
 const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
 
@@ -18,7 +19,7 @@ class LoginUser {
         insertUserData["dpLink"] = authUserData.picture;
         insertUserData["signInProvider"] = authUserData.firebase.sign_in_provider;
         insertUserData["roles"] = rolesList;
-        insertUserData["ct"] = new Date().getTime();
+        insertUserData["ct"] = moment().valueOf();
         insertUserData["logLimit"] = 500;
 
         return new Promise(async (resolve, reject) => {
