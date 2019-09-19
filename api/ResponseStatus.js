@@ -35,6 +35,17 @@ class ResponseStatus {
         }
     }
 
+    static INVALID_PARAMETER_VALUE(paramName, validValues = []) {
+        return {
+            message: {
+                developerMessage: "Invalid parameter",
+                userMessage: "Provided " + paramName + " is invalid",
+                validValues: validValues
+            },
+            statusCode: 400
+        }
+    }
+
     static NO_AUTHENTICATION_TOKEN() {
         return {
             message: {

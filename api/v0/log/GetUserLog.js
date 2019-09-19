@@ -16,7 +16,7 @@ class GetUserLog {
                     filter += " " + query.filter;
                 }
 
-                let getResult = await mongoDBUtility.getData(collection, filter);
+                let getResult = await mongoDBUtility.getData(collection, filter, projection);
 
                 if (getResult === null) {
                     resolve(ResponseStatus.NO_DATA_AVAILABLE());

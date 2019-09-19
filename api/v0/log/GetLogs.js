@@ -1,18 +1,16 @@
 const MongoDBUtility = require('./../../../mongodb/MongoDBUtility');
 const ResponseStatus = require('./../../ResponseStatus');
-const UserAuthenticator = require('./../../auth/UserAuthenticator');
 
 class GetLogs {
     execute(parameters) {
         return new Promise(async (resolve, reject) => {
             try {
-                if(!await UserAuthenticator.isUserAdmin(parameters.userData.uid)){
-                    resolve(ResponseStatus.FORBIDDEN("Only admins are allowed to access this resource"));
-                    return;
-                }
+                let query = parameters.query;
+                let projection = query.projection;
+                let filter = query.filter;
 
                 let mongoDBUtility = new MongoDBUtility();
-                let getResult = await mongoDBUtility.getData("log");
+                let getResult = await mongoDBUtility.getData("log", filter, projection);
 
                 if (getResult.length === 0) {
                     resolve(ResponseStatus.NO_DATA_AVAILABLE());

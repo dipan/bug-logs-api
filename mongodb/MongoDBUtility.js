@@ -63,7 +63,7 @@ class MongoDBUtility {
 
     }
 
-    getData(collectionName, filter = "") {
+    getData(collectionName, filter = "", projection = "") {
         return new Promise((resolve, reject) => {
             this.getMongoConnection()
                 .then((mongoDBConnection) => {
@@ -76,8 +76,20 @@ class MongoDBUtility {
                             } catch (error) {
                                 throw error;
                             }
+                        } else {
+                            filter = {};
                         }
-                        collection.find(filter).toArray((error, docs) => {
+                        let projectionExpn = new Object();
+                        if (Utility.isStringNonEmpty(projection)) {
+                            projection = projection.split(",");
+                            for (let expn of projection) {
+                                projectionExpn[expn.trim()] = 1;
+                            }
+                        }
+                        projection = {
+                            projection: projectionExpn
+                        }
+                        collection.find(filter, projection).toArray((error, docs) => {
                             let query = "db.getCollection(\"" + collectionName + "\").find(" +
                                 JSON.stringify(filter, null, 0) +
                                 ").pretty()";

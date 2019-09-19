@@ -98,17 +98,17 @@ routerV0.route("/log")
         } finally {
             res.status(apiResponse.statusCode).send(apiResponse.message);
         }
-    })
-    .get(async (req, res) => {
-        let apiResponse = null;
-        try {
-            apiResponse = await new GetLogs().execute(req);
-        } catch (error) {
-            Logger.error(error);
-            apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
-        } finally {
-            res.status(apiResponse.statusCode).send(apiResponse.message);
-        }
     });
+    // .get(async (req, res) => {
+    //     let apiResponse = null;
+    //     try {
+    //         apiResponse = await new GetLogs().execute(req);
+    //     } catch (error) {
+    //         Logger.error(error);
+    //         apiResponse = ResponseStatus.INTERNAL_SERVER_ERROR(error);
+    //     } finally {
+    //         res.status(apiResponse.statusCode).send(apiResponse.message);
+    //     }
+    // });
 
 module.exports = routerV0;

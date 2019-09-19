@@ -1,6 +1,7 @@
 process.env.NODE_ENV = process.argv[2] || "development";
-const routerV0 = require('./api/v0/router');
 const routerCom = require('./api/com/router');
+const routerV0 = require('./api/v0/router');
+
 const express = require('express');
 const Utility = require('./utility/Utility');
 const UserAuthenticator = require('./api/auth/UserAuthenticator');

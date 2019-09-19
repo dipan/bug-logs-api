@@ -1,5 +1,16 @@
 ## Base URL : [http://35.202.175.54:3000/api](#)
 
+### Public api
+### /update/log/:id
+* PATCH
+    * query
+        - __action : Action to be performed. (possible values - incrementViewCount)__
+
+### /log
+* GET
+    
+   
+### Base path - /auth/v0
 ### /login
 * POST
     * headers

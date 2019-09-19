@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && quit",
+    "dev": "nodemon app.js",
+    "prod": "node app.js production &"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "arraylist": "^0.1.0",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",

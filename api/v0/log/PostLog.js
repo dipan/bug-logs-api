@@ -25,32 +25,32 @@ class PostLog {
         insertData["userId"] = parameters.userData.uid;
 
         if (!("tags" in body)) {
-            return ResponseStatus.REQUIRED_PARAMETER_MISSING("tags")
+            return ResponseStatus.REQUIRED_PARAMETER_MISSING("tags");
         }
         if (!("title" in body)) {
-            return ResponseStatus.REQUIRED_PARAMETER_MISSING("title")
+            return ResponseStatus.REQUIRED_PARAMETER_MISSING("title");
         }
         if (!("problemDesc" in body)) {
-            return ResponseStatus.REQUIRED_PARAMETER_MISSING("problemDesc")
+            return ResponseStatus.REQUIRED_PARAMETER_MISSING("problemDesc");
         }
         if (!("solution" in body)) {
-            return ResponseStatus.REQUIRED_PARAMETER_MISSING("solution")
+            return ResponseStatus.REQUIRED_PARAMETER_MISSING("solution");
         }
         let tags = body.tags;
         let title = body.title;
         let problemDesc = body.problemDesc;
         let solution = body.solution;
         if (Utility.isStringEmptyOrUndefined(tags)) {
-            return ResponseStatus.INVALID_PARAMETER("Tags cannot be empty")
+            return ResponseStatus.INVALID_PARAMETER("Tags cannot be empty");
         }
         if (Utility.isStringEmptyOrUndefined(title)) {
-            return ResponseStatus.INVALID_PARAMETER("Title cannot be empty")
+            return ResponseStatus.INVALID_PARAMETER("Title cannot be empty");
         }
         if (Utility.isStringEmptyOrUndefined(problemDesc)) {
-            return ResponseStatus.INVALID_PARAMETER("Problem description cannot be empty")
+            return ResponseStatus.INVALID_PARAMETER("Problem description cannot be empty");
         }
         if (Utility.isStringEmptyOrUndefined(solution)) {
-            return ResponseStatus.INVALID_PARAMETER("Solution cannot be empty")
+            return ResponseStatus.INVALID_PARAMETER("Solution cannot be empty");
         }
 
         insertData["tags"] = tags.split(",");

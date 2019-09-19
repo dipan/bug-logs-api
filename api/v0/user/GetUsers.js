@@ -8,13 +8,14 @@ class GetUsers {
 
         return new Promise(async (resolve, reject) => {
             try {
-                if(!await UserAuthenticator.isUserAdmin(parameters.userData.uid)){
+                if (!await UserAuthenticator.isUserAdmin(parameters.userData.uid)) {
                     resolve(ResponseStatus.FORBIDDEN("Only admins are allowed to access this resource"));
                     return;
                 }
 
+                let filter = parameters.query.filter;
                 let mongoDBUtility = new MongoDBUtility();
-                let getResult = await mongoDBUtility.getData("user");
+                let getResult = await mongoDBUtility.getData("user", filter);
 
                 if (getResult.length === 0) {
                     resolve(ResponseStatus.NO_DATA_AVAILABLE());
