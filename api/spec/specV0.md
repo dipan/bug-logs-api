@@ -1,4 +1,4 @@
-## Base URL : [http://35.202.175.54:3000/api](#)
+## Base URL : [http://35.202.131.196:3000/api](#)
 
 ### Public api
 ### /update/log/:id
