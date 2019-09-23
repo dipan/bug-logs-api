@@ -55,7 +55,7 @@ class MongoDBUtility {
                     });
                     mongoDBConnection.close();
                 }).catch((error) => {
-                    console.log("Error while inserting data : ");
+                    Logger.error("Error while inserting data : ");
                     Logger.error(error);
                     reject(error);
                 });
@@ -109,7 +109,7 @@ class MongoDBUtility {
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
-                    console.log("Error while finding data : ");
+                    Logger.error("Error while finding data : ");
                     Logger.error(error);
                     reject(error);
                 });
@@ -160,7 +160,7 @@ class MongoDBUtility {
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
-                    console.log("Error while finding data by id : ");
+                    Logger.error("Error while finding data by id : ");
                     Logger.error(error);
                     reject(error);
                 });
@@ -197,7 +197,7 @@ class MongoDBUtility {
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
-                    console.log("Error while updating data : ");
+                    Logger.error("Error while updating data : ");
                     Logger.error(error);
                     reject(error);
                 });
@@ -232,7 +232,7 @@ class MongoDBUtility {
                     mongoDBConnection.close();
                 })
                 .catch((error) => {
-                    Logger.error("Error while updating data : ");
+                    Logger.error("Error while updating multiple data : ");
                     Logger.error(error);
                     reject(error);
                 });
